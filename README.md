@@ -25,7 +25,7 @@ $ pip3 install -e .
 
 ## Training
 
-$ python -m learning.imitation.iil-dagger.train
+$ python train.py
 
 ### Arguments
 
@@ -41,7 +41,7 @@ $ python -m learning.imitation.iil-dagger.train
 
 ## Testing
 
-$ python -m learning.imitation.iil-dagger.test
+$ python test.py
 
 ### Arguments
 
