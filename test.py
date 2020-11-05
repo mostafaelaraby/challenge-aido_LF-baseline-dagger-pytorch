@@ -1,7 +1,7 @@
-from .train import launch_env, teacher
-from .learner import NeuralNetworkPolicy
-from .model import Squeezenet
-from .algorithms import DAgger
+from train import launch_env, teacher
+from learner import NeuralNetworkPolicy
+from model import Squeezenet
+from algorithms import DAgger
 import argparse
 import os
 
