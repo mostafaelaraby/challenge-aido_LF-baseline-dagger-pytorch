@@ -25,7 +25,7 @@ $ pip3 install -e .
 
 ## Training
 
-$ python train.py
+$ python -m learning.train
 
 ### Arguments
 
@@ -41,7 +41,7 @@ $ python train.py
 
 ## Testing
 
-$ python test.py
+$ python -m learning.test
 
 ### Arguments
 
@@ -50,35 +50,8 @@ $ python test.py
 * --horizon: number of steps per episode
 
 ## Submitting 
-Use [Pytorch RL Template](https://github.com/duckietown/challenge-aido_LF-template-pytorch) and replace model with the model trained in model/squeezenet.py
-and use the following code snippet to convert speed and angular velocity to pwm left and right.
-``` Python
-velocity, omega = self.compute_action(self.current_image) 
-
-# assuming same motor constants k for both motors
-k_r = 27.0
-k_l = 27.0
-gain = 1.0
-trim = 0.0
-
-# adjusting k by gain and trim
-k_r_inv = (gain + trim) / k_r
-k_l_inv = (gain - trim) / k_l
-wheel_dist = 0.102
-radius=0.0318
-
-omega_r = (velocity + 0.5 * omega * wheel_dist) / radius
-omega_l = (velocity - 0.5 * omega * wheel_dist) / radius
-
-# conversion from motor rotation rate to duty cycle
-u_r = omega_r * k_r_inv
-u_l = omega_l * k_l_inv
-
-# limiting output to limit, which is 1.0 for the duckiebot
-pwm_right = max(min(u_r, 1), -1)
-pwm_left = max(min(u_l, 1), -1)
-
-```
+Copy trained model files into submission/models directory and then use [duckietown shell](https://github.com/duckietown/duckietown-shell) to submit. 
+For more information on submitting check [duckietown shell documentation](https://docs.duckietown.org/DT19/AIDO/out/cli.html).
 
 ## Acknowledgment
 
