@@ -1,7 +1,7 @@
-from train import launch_env, teacher
-from learner import NeuralNetworkPolicy
-from model import Squeezenet
-from algorithms import DAgger
+from .train import launch_env, teacher
+from .learner import NeuralNetworkPolicy
+from .model import Squeezenet
+from .algorithms import DAgger
 import argparse
 import os
 
@@ -28,25 +28,25 @@ if __name__ == "__main__":
     task_horizon = config.horizon
     task_episode = config.episode
 
-    # if not (os.path.isfile(config.model_path)):
-    #     raise Exception("Model File not found")
+    if not (os.path.isfile(config.model_path)):
+        raise Exception("Model File not found")
 
-    # model = Squeezenet(num_outputs=config.num_outputs, max_velocity=max_velocity)
+    model = Squeezenet(num_outputs=config.num_outputs, max_velocity=max_velocity)
 
-    # learner = NeuralNetworkPolicy(
-    #     model=model,
-    #     optimizer=None,
-    #     dataset=None,
-    #     storage_location="",
-    #     input_shape=input_shape,
-    #     max_velocity=max_velocity,
-    #     model_path=config.model_path,
-    # )
+    learner = NeuralNetworkPolicy(
+        model=model,
+        optimizer=None,
+        dataset=None,
+        storage_location="",
+        input_shape=input_shape,
+        max_velocity=max_velocity,
+        model_path=config.model_path,
+    )
 
     algorithm = DAgger(
         env=environment,
         teacher=teacher(environment, max_velocity),
-        learner=teacher(environment, max_velocity),
+        learner=learner,
         horizon=task_horizon,
         episodes=task_episode,
         alpha=0,
