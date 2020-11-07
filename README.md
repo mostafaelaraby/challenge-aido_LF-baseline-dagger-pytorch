@@ -50,8 +50,8 @@ $ python -m learning.test
 * --horizon: number of steps per episode
 
 ## Submitting 
-Copy trained model files into submission/models directory and then use [duckietown shell](https://github.com/duckietown/duckietown-shell) to submit. 
-For more information on submitting check [duckietown shell documentation](https://docs.duckietown.org/DT19/AIDO/out/cli.html).
+* Copy trained model files into submission/models directory and then use [duckietown shell](https://github.com/duckietown/duckietown-shell) to submit. 
+* For more information on submitting check [duckietown shell documentation](https://docs.duckietown.org/DT19/AIDO/out/cli.html).
 
 ## Acknowledgment
 

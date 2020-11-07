@@ -1,0 +1,10 @@
+# challenge name(s); defaults to all compatible challenges
+# challenge: [c1,c2]
+
+# conventions + format
+protocol: aido2_db18_agent-z2
+user-label: "template-pytorch"
+user-payload: {}
+description: |
+    This is a simple baseline solution for an agent learns to imitate behavior from logs
+     [This code is documented here](https://docs.duckietown.org/daffy/AIDO/out/pytorch_template.html).

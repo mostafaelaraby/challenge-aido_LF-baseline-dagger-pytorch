@@ -1,0 +1,105 @@
+version: 2.1
+workflows:
+  version: 2
+  test:
+    jobs:
+      - submit:
+          context: pip-staging
+
+jobs:
+  submit:
+    docker:
+      - image: registry-stage.duckietown.org/duckietown/aido-submission-ci-test:daffy-amd64
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Setup daffy commands
+          # language=bash
+          command: |
+            dts --set-version daffy
+            dts update
+      - run:
+          name: Setup token
+          # language=bash
+          command: |
+            dts tok verify ${token_dt1_bea}
+            dts tok set ${token_dt1_bea}
+            # this does not matter on the staging server
+            dts challenges config --docker-username bea
+      - run:
+          name: "Challenges info"
+          # language=bash
+          command: |
+            dts challenges info
+
+      - run:
+          name: Submit
+          # language=bash
+          command: |
+            make submit-bea
+
+
+#  submit:
+#    docker:
+#      - image: python:3.8
+#    environment:
+#      DOCKER_VER: "18.09.2"
+#      COMPOSE_VER: "1.23.2"
+##    machine: true
+#    steps:
+#      - checkout
+#      - run:
+#          name: Install Docker client
+#          # language=bash
+#          command: |
+#            set -x
+#            curl -L -o /tmp/docker-${DOCKER_VER}.tgz \
+#              https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VER}.tgz
+#            tar -xz -C /tmp -f /tmp/docker-${DOCKER_VER}.tgz
+#            mv /tmp/docker/* /usr/bin
+#      - run:
+#          name: Install Docker Compose
+#          # language=bash
+#          command: |
+#            plt=docker-compose-`uname -s`-`uname -m`
+#            curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VER}/${plt} > ~/docker-compose
+#            chmod +x ~/docker-compose
+#            mv ~/docker-compose /usr/local/bin/docker-compose
+#      - setup_remote_docker:
+#          docker_layer_caching: true
+#      - run:
+#          name: Install deps
+#          # language=bash
+#          command: |
+#            pip install --use-feature=2020-resolver duckietown-shell duckietown-challenges-daffy pipdeptree
+#            pipdeptree
+#            pip list
+#      - run:
+#          name: Setup daffy commands
+#          # language=bash
+#          command: |
+#            dts --set-version daffy
+#            dts update
+#      - run:
+#          name: Setup token
+#          # language=bash
+#          command: |
+#            dts tok verify ${token_dt1_bea}
+#            dts tok set ${token_dt1_bea}
+#            dts challenges config --docker-username bea
+#
+#      - run:
+#          name: "Challenges info"
+#          # language=bash
+#          command: |
+#            dts update
+#            dts challenges info
+#
+#      - run:
+#          name: Submit
+#          # language=bash
+#          command: |
+#            make submit-bea
+#      - jira/notify

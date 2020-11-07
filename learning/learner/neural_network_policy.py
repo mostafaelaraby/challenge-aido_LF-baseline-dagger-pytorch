@@ -150,8 +150,7 @@ class NeuralNetworkPolicy:
 
         observations = [compose_obs(observation).cpu().numpy() for observation in observations]
         try:
-            # scaling velocity to become in 0-1 range which is multiplied by max speed to get actual vel
-            # also scaling steering angle to become in range -1 to 1 to make it easier to regress
+            # Scaling steering angle to become in range -1 to 1 to make it easier to regress
             expert_actions = [
                 np.array([expert_action[0], expert_action[1] / (np.pi / 2)])
                 for expert_action in expert_actions
