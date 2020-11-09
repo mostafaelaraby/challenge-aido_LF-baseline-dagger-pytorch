@@ -48,7 +48,7 @@ class Dronet(nn.Module):
         takes images as input and predict the action space unnormalized
     """
 
-    def __init__(self, num_outputs=2, max_velocity=0.7, max_steering=np.pi / 2):
+    def __init__(self, num_outputs=2, max_velocity=0.3, max_steering=np.pi / 2):
         """
         Parameters
         ----------
@@ -88,16 +88,12 @@ class Dronet(nn.Module):
         # predicting if the bot should speed up or slow down
         self.speed_up_channel = nn.Sequential(nn.Linear(self.num_feats_extracted, 1))
 
-        # Decaying speed up loss parameters
-        self.decay = 1 / 10
-        self.epoch_0 = 10
-        self.epoch = 0
 
         # Max steering angle, minimum velocity and maximum velocity parameters
         self.max_steering = max_steering
         self.max_velocity = max_velocity
         self.max_velocity_tensor = torch.tensor(self.max_velocity).to(self._device)
-        self.min_velocity = self.max_velocity * 0.5
+        self.min_velocity = 0.1
         self.min_velocity_tensor = torch.tensor(self.min_velocity).to(self._device)
 
     def forward(self, images):
