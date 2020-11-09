@@ -29,15 +29,15 @@ $ python -m learning.train
 
 ### Arguments
 
-* --episode: number of episodes
-* --horizon: number of steps per episode
-* --learning-rate: index of learning rate from list [1e-1, 1e-2, 1e-3, 1e-4, 1e-5]
-* --decay: mixing decay between expert and learner [0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95]
-* --save-path: directory used to save output model
-* --map-name: name of the map used during the training
-* --num-outputs: specify number of outputs from the learner model 1 to predict only angular velocity with fixed speed and 2 to predict both of them
-* --domain-rand: flag to enable domain randomization to rbe able to transfer trained model to real world.
-* --randomize-map: randomize training maps on reset
+* `--episode` or `-i` an integer specifying the number of episodes to train the agent, defaults to 10.
+* `--horizon` or `-r` an integer specifying the length of the horizon in each episode, defaults to 64.
+* `--learning-rate` or `-l` integer specifying the index from the list [1e-1, 1e-2, 1e-3, 1e-4, 1e-5] to select the learning rate, defaults to 2.
+* `--decay` or `-d` integer specifying the index from the list [0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95] to select the initial probability to choose the teacher, the learner.
+* `--save-path` or `-s` string specifying the path where to save the trained model, models will be overwritten to keep latest episode, defaults to a file named iil_baseline.pt on the project root.
+* `--map-name` or `-m` string  specifying which map to use for training, defaults to loop_empty.
+* `--num-outputs` integer specifying the number of outputs the model will have, can be modified to train only angular speed, defaults to 2 for both linear and angular speed.
+* `--domain-rand` or `-dr` a flag to enable domain randomization for the transferability to real world from simulation.
+* `--randomize-map` or `-rm` a flag to randomize training maps on reset.
 
 ## Testing
 
@@ -45,9 +45,12 @@ $ python -m learning.test
 
 ### Arguments
 
-*  --model-path: path of the model to be tested
-* --episode: number of episodes
-* --horizon: number of steps per episode
+* `--model-path` or `-mp` string specifying the path to the saved model to be used in testing.
+* `--episode` or `-i` an integer specifying the number of episodes to test the agent, defaults to 10.
+* `--horizon` or `-r` an integer specifying the length of the horizon in each episode, defaults to 64.
+* `--save-path` or `-s` string specifying the path where to save the trained model, models will be overwritten to keep latest episode, defaults to a file named iil_baseline.pt on the project root.
+* `--num-outputs` integer specifying the number of outputs the model has, defaults to 2.
+* `--map-name` or `-m` string  specifying which map to use for training, defaults to loop_empty.
 
 ## Submitting 
 * Copy trained model files into submission/models directory and then use [duckietown shell](https://github.com/duckietown/duckietown-shell) to submit. 
