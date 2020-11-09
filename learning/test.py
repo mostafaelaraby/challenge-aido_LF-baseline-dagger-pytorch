@@ -9,7 +9,7 @@ import os
 def process_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--episode", "-i", default=10, type=int)
-    parser.add_argument("--horizon", "-r", default=64, type=int)
+    parser.add_argument("--horizon", "-r", default=256, type=int)
     parser.add_argument("--num-outputs", "-n", default=2, type=int)
     parser.add_argument("--model-path", "-mp", default="", type=str)
     parser.add_argument("--map-name", "-m", default="loop_empty", type=str)
