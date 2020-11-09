@@ -133,7 +133,7 @@ class Dronet(nn.Module):
         is_speed_up, steering_angle = self.forward(images)
         criterion_v = nn.BCEWithLogitsLoss()
         speed_up = (
-            (target[:, 0] > self.min_speed_pure_pursuit).float().unsqueeze(1)
+            (target[:, 0] > self.min_velocity).float().unsqueeze(1)
         )  # 0 for expert speeding up and 1 for slowing down for a corner or an incoming duckbot
         loss_steering_angle = F.mse_loss(
             steering_angle, target[:, 1].unsqueeze(1), reduction="mean"
