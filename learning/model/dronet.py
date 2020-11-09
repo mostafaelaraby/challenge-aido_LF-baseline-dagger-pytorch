@@ -36,7 +36,7 @@ class BasicBlock(nn.Module):
 class Dronet(nn.Module):
     """
     A class used to define action regressor model based on Dronet arch.
-    Kyrkou, Christos, et al. "DroNet: Efficient convolutional neural network detector for real-time UAV applications." 2018 Design, Automation & Test in Europe Conference & Exhibition (DATE). IEEE, 2018.
+    Loquercio, Antonio, et al. "Dronet: Learning to fly by driving." IEEE Robotics and Automation Letters 3.2 (2018): 1088-1095.
     ...
     Methods
     -------
