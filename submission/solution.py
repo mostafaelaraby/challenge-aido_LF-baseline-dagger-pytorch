@@ -68,7 +68,8 @@ class PytorchRLTemplateAgent:
 
     def on_received_get_commands(self, context: Context):
         velocity, omega = self.compute_action(self.current_image)
-        # omega *= 7
+        # multiplying steering angle by a gain
+        omega *= 7
         pwm_left, pwm_right = self.wrapper.convert(velocity, omega)
         grey = RGB(0.0, 0.0, 0.0)
         led_commands = LEDSCommands(grey, grey, grey, grey, grey)
