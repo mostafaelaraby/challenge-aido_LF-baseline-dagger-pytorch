@@ -162,8 +162,8 @@ class Dronet(nn.Module):
             1 - is_speed_up
         ) * self.min_velocity_tensor
         steering_angle = steering_angle * self.max_steering
-        output = torch.cat((v_tensor, steering_angle), 1)
-        return output.detach().cpu().numpy()
+        output = torch.cat((v_tensor, steering_angle), 1).squeeze().detach()
+        return output.cpu().numpy()
 
 
 if __name__ == "__main__":
