@@ -1,6 +1,6 @@
 from .train import launch_env, teacher
 from .learner import NeuralNetworkPolicy
-from .model import Squeezenet
+from .model import Dronet
 from .algorithms import DAgger
 import argparse
 import os
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     if not (os.path.isfile(config.model_path)):
         raise Exception("Model File not found")
 
-    model = Squeezenet(num_outputs=config.num_outputs, max_velocity=max_velocity)
+    model = Dronet(num_outputs=config.num_outputs, max_velocity=max_velocity)
 
     learner = NeuralNetworkPolicy(
         model=model,

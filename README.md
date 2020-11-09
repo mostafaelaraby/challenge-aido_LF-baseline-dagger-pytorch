@@ -83,10 +83,14 @@ $ python -m learning.test
   year={2011}
 }
 
-@article{iandola2016squeezenet,
-  title={SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and< 0.5 MB model size},
-  author={Iandola, Forrest N and Han, Song and Moskewicz, Matthew W and Ashraf, Khalid and Dally, William J and Keutzer, Kurt},
-  journal={arXiv preprint arXiv:1602.07360},
-  year={2016}
+@article{loquercio2018dronet,
+  title={Dronet: Learning to fly by driving},
+  author={Loquercio, Antonio and Maqueda, Ana I and Del-Blanco, Carlos R and Scaramuzza, Davide},
+  journal={IEEE Robotics and Automation Letters},
+  volume={3},
+  number={2},
+  pages={1088--1095},
+  year={2018},
+  publisher={IEEE}
 }
 ```

@@ -1,1 +1,1 @@
-from .squeezenet import Squeezenet
+from .dronet import Dronet

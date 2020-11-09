@@ -88,7 +88,7 @@ class NeuralNetworkPolicy:
         # Train model
         for epoch in tqdm(range(1, self.epochs + 1)):
             running_loss = 0.0
-            self.model.epoch = 0
+            self.model.epoch = epoch
             for i, data in enumerate(dataloader, 0):
                 # Send data to device
                 data = [variable.to(self._device) for variable in data]

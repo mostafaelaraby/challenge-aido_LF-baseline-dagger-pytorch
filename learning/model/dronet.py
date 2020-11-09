@@ -1,6 +1,6 @@
-import os
 import torch
 from torch import nn
+import torch.nn.functional as F
 
 import numpy as np
 from torchvision.models.resnet import conv3x3
@@ -47,7 +47,6 @@ class Dronet(nn.Module):
     predict(*args)
         takes images as input and predict the action space unnormalized
     """
-
     def __init__(self, num_outputs=2, max_velocity=0.7, max_steering=np.pi / 2):
         """
         Parameters
@@ -98,7 +97,9 @@ class Dronet(nn.Module):
         self.max_velocity = max_velocity
         self.max_velocity_tensor = torch.tensor(self.max_velocity).to(self._device)
         self.min_velocity = self.max_velocity * 0.5
-        self.min_velocity_tensor = torch.tensor(self.min_velocity).to(self._device)
+        self.min_velocity_tensor = torch.tensor(self.min_velocity).to(
+            self._device
+        )
 
     def forward(self, images):
         """
@@ -115,6 +116,33 @@ class Dronet(nn.Module):
         steering_angle = self.steering_angle_channel(features)
         is_speed_up = self.speed_up_channel(features)
         return is_speed_up, steering_angle
+
+    def loss(self, *args):
+        """
+        Parameters
+        ----------
+        *args :
+            takes batch of images and target action space to get the loss function.
+        Returns
+        -------
+        loss: tensor
+            loss function used by the optimizer to update the model
+        """
+        self.train()
+        images, target = args
+        is_speed_up, steering_angle = self.forward(images)
+        criterion_v = nn.BCEWithLogitsLoss()
+        speed_up = (
+            (target[:, 0] > self.min_speed_pure_pursuit).float().unsqueeze(1)
+        )  # 0 for expert speeding up and 1 for slowing down for a corner or an incoming duckbot
+        loss_steering_angle = F.mse_loss(
+            steering_angle, target[:, 1].unsqueeze(1), reduction="mean"
+        )
+        loss_v = criterion_v(is_speed_up, speed_up)
+        loss = loss_steering_angle + loss_v * max(
+            0, 1 - np.exp(self.decay * (self.epoch - self.epoch_0))
+        )
+        return loss
 
     def predict(self, *args):
         """
@@ -137,13 +165,13 @@ class Dronet(nn.Module):
         output = torch.cat((v_tensor, steering_angle), 1)
         return output
 
-    def close(self):
-        pass
 
-    def load(self, filename, directory, for_inference=False):
-        model_path = os.path.join(directory, filename)
-        self.load_state_dict(torch.load(model_path, map_location=self._device))
-        if for_inference:
-            self.eval()
-        else:
-            self.train()
+if __name__ == "__main__":
+    batch_size = 2
+    img_size = (120, 160)
+    model = Dronet()
+    input_image = torch.rand((batch_size, 3, img_size[0], img_size[1])).to(
+        model._device
+    )
+    prediction = model.predict(input_image)
+    assert list(prediction.shape) == [batch_size, model.num_outputs]

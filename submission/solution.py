@@ -7,7 +7,7 @@ import torch
 from aido_schemas import EpisodeStart, protocol_agent_DB20, PWMCommands, DB20Commands, LEDSCommands, RGB, \
     wrap_direct, Context, DB20Observations, JPGImage, logger
 
-from model import Squeezenet
+from model import Dronet
 from wrappers import DTPytorchWrapper
 from helpers import SteeringToWheelVelWrapper
 from PIL import Image
@@ -20,7 +20,7 @@ class PytorchRLTemplateAgent:
         self.preprocessor = DTPytorchWrapper()
         self.image_size = (120,160, 3)
         self.wrapper  = SteeringToWheelVelWrapper()
-        self.model = Squeezenet()
+        self.model = Dronet()
         self._device = self.model._device
         self.model.to(self._device)
         self.current_image = np.zeros((3,self.image_size[0],self.image_size[1]))
@@ -68,7 +68,7 @@ class PytorchRLTemplateAgent:
 
     def on_received_get_commands(self, context: Context):
         velocity, omega = self.compute_action(self.current_image)
-        omega *= 7 # gain 
+        # omega *= 7
         pwm_left, pwm_right = self.wrapper.convert(velocity, omega)
         grey = RGB(0.0, 0.0, 0.0)
         led_commands = LEDSCommands(grey, grey, grey, grey, grey)
@@ -90,7 +90,7 @@ def jpg2rgb(image_data: bytes) -> np.ndarray:
     return data
 
 def main():
-    node = PytorchRLTemplateAgent()
+    node = PytorchRLTemplateAgent(load_model=True, model_path="model_lf.pt")
     protocol = protocol_agent_DB20
     wrap_direct(node=node, protocol=protocol)
 

@@ -4,7 +4,7 @@ import argparse
 
 from .teacher import PurePursuitPolicy
 from .learner import NeuralNetworkPolicy
-from .model import Squeezenet
+from .model import Dronet
 from .algorithms import DAgger
 from .utils import MemoryMapDataset
 import torch
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     task_horizon = config.horizon
     task_episode = config.episode
 
-    model = Squeezenet(num_outputs=config.num_outputs, max_velocity=max_velocity)
+    model = Dronet(num_outputs=config.num_outputs, max_velocity=max_velocity)
     policy_optimizer = torch.optim.Adam(
         model.parameters(), lr=learning_rates[config.learning_rate]
     )
